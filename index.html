@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PoS Blockchain Electronic Voting System | DecentriVote</title>
+    <!-- Modern Google Fonts & Chart.js -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Top Navigation Header -->
+        <header class="navbar">
+            <div class="brand">
+                <div class="logo-icon">🛡️</div>
+                <div class="brand-text">
+                    <h1>DecentriVote <span class="badge pos-badge">PoS Consensus v1.0</span></h1>
+                    <p>Secure, Transparent & Decentralized Blockchain Voting Protocol</p>
+                </div>
+            </div>
+            
+            <!-- Quick Network Status Bar -->
+            <div class="network-stats">
+                <div class="stat-pill">
+                    <span class="stat-label">Block Height</span>
+                    <span class="stat-value" id="nav-block-height">#1</span>
+                </div>
+                <div class="stat-pill">
+                    <span class="stat-label">Total Stake</span>
+                    <span class="stat-value" id="nav-total-stake">1000 🪙</span>
+                </div>
+                <div class="stat-pill">
+                    <span class="stat-label">Mempool</span>
+                    <span class="stat-value highlight" id="nav-mempool">0 Tx</span>
+                </div>
+                <div class="stat-pill status-ok" id="chain-status-pill">
+                    <span class="status-dot"></span>
+                    <span id="chain-status-text">Ledger Verified</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs (6 Phases Mapping) -->
+        <nav class="nav-tabs">
+            <button class="tab-btn active" data-tab="tab-overview">
+                <span class="tab-num">Phase 1-6</span>
+                <span class="tab-title">Overview</span>
+            </button>
+            <button class="tab-btn" data-tab="tab-voting">
+                <span class="tab-num">Phase 1 & 3</span>
+                <span class="tab-title">Voter Booth</span>
+            </button>
+            <button class="tab-btn" data-tab="tab-staking">
+                <span class="tab-num">Phase 2</span>
+                <span class="tab-title">PoS Staking & Proposing</span>
+            </button>
+            <button class="tab-btn" data-tab="tab-explorer">
+                <span class="tab-num">Phase 2 & 5</span>
+                <span class="tab-title">Block Explorer</span>
+            </button>
+            <button class="tab-btn" data-tab="tab-p2p">
+                <span class="tab-num">Phase 4</span>
+                <span class="tab-title">P2P Network Nodes</span>
+            </button>
+            <button class="tab-btn" data-tab="tab-tally">
+                <span class="tab-num">Phase 5</span>
+                <span class="tab-title">Results & Receipt Verifier</span>
+            </button>
+        </nav>
+
+        <!-- Notification Banner -->
+        <div id="toast-banner" class="toast hidden"></div>
+
+        <!-- TAB 1: SYSTEM OVERVIEW -->
+        <main id="tab-overview" class="tab-content active">
+            <div class="hero-banner">
+                <div class="hero-text">
+                    <h2>Blockchain-Based Electronic Voting System Architecture</h2>
+                    <p>Empowered by Proof-of-Stake (PoS) Consensus, Zero-Knowledge Voter Nullifiers, and Cryptographic Merkle Verification.</p>
+                </div>
+                <div class="hero-actions">
+                    <button class="btn btn-primary" onclick="switchTab('tab-voting')">🗳️ Cast Vote Now</button>
+                    <button class="btn btn-secondary" onclick="triggerBlockForging()">⚡ Forge Block (PoS)</button>
+                </div>
+            </div>
+
+            <!-- 6 Phases Workflow Grid -->
+            <div class="section-header">
+                <h3>System Lifecycle Architecture (6 Phases)</h3>
+            </div>
+            
+            <div class="phase-grid">
+                <div class="phase-card">
+                    <div class="phase-badge">Phase 1</div>
+                    <h4>Cryptographic Identity & Anonymity</h4>
+                    <p>Asymmetric ECDSA Keypair generation. SHA-256 Voter Nullifiers decouple public identity from ballot contents.</p>
+                    <div class="phase-tag">Keypairs & Nullifiers</div>
+                </div>
+
+                <div class="phase-card">
+                    <div class="phase-badge">Phase 2</div>
+                    <h4>Proof-of-Stake (PoS) Consensus</h4>
+                    <p>Stake-weighted random leader selection algorithm (Ouroboros style). Validator block forging and slashing penalties.</p>
+                    <div class="phase-tag">Weighted Lottery & Slashing</div>
+                </div>
+
+                <div class="phase-card">
+                    <div class="phase-badge">Phase 3</div>
+                    <h4>Smart Contract & Ballot Logic</h4>
+                    <p>Candidate registry, anti-double voting verification, cryptographic signature check before mempool admission.</p>
+                    <div class="phase-tag">Smart Contract Rules</div>
+                </div>
+
+                <div class="phase-card">
+                    <div class="phase-badge">Phase 4</div>
+                    <h4>Decentralized P2P Network</h4>
+                    <p>Multi-node gossip transaction propagation across Election Commission, University, and Auditor bodies.</p>
+                    <div class="phase-tag">P2P Peer Sync</div>
+                </div>
+
+                <div class="phase-card">
+                    <div class="phase-badge">Phase 5</div>
+                    <h4>Public Audit & Receipt Tally</h4>
+                    <p>100% immutable block ledger. Merkle Root cryptographic auditing and individual voter receipt verification.</p>
+                    <div class="phase-tag">Merkle Trees & Receipts</div>
+                </div>
+
+                <div class="phase-card">
+                    <div class="phase-badge">Phase 6</div>
+                    <h4>Interactive Web Visualizer</h4>
+                    <p>Real-time Blockchain Explorer, Validator Staking Hub, Vote Booth, and Dynamic Election Tally Analytics.</p>
+                    <div class="phase-tag">Real-Time UI & REST API</div>
+                </div>
+            </div>
+        </main>
+
+        <!-- TAB 2: VOTER BOOTH (PHASE 1 & 3) -->
+        <main id="tab-voting" class="tab-content">
+            <div class="grid-2col">
+                <!-- Step 1: Credential Generator -->
+                <div class="glass-card">
+                    <div class="card-header">
+                        <h3>🔑 Step 1: Register Voter Cryptographic Identity</h3>
+                    </div>
+                    <form id="voter-reg-form">
+                        <div class="form-group">
+                            <label>National Voter ID / Student Reg No</label>
+                            <input type="text" id="voter-id-input" placeholder="e.g. VTR-982410" required value="VOTER-ALPHA-101">
+                        </div>
+                        <div class="form-group">
+                            <label>Secret Voter Passcode / Biometric Hash</label>
+                            <input type="password" id="voter-passcode-input" placeholder="Enter private secret passcode" required value="SuperSecretPasscode#2026">
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-full">Generate Anonymous Credentials</button>
+                    </form>
+
+                    <!-- Credentials Output Box -->
+                    <div id="voter-credentials-box" class="credential-box hidden">
+                        <div class="credential-header">
+                            <span class="status-ok">✔ Credentials Generated</span>
+                        </div>
+                        <div class="code-field">
+                            <span class="code-label">ECDSA Public Key:</span>
+                            <code id="display-pubkey">--</code>
+                        </div>
+                        <div class="code-field">
+                            <span class="code-label">ECDSA Private Key (Encrypted Local):</span>
+                            <code id="display-privkey">--</code>
+                        </div>
+                        <div class="code-field">
+                            <span class="code-label">Anonymous Voter Nullifier Hash (Zero-Knowledge Token):</span>
+                            <code id="display-nullifier" class="highlight-code">--</code>
+                        </div>
+                        <div class="info-alert">
+                            ℹ️ Your identity is hashed using zero-knowledge nullifier rules. No administrator can link your name to your cast vote.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Ballot Casting -->
+                <div class="glass-card">
+                    <div class="card-header">
+                        <h3>🗳️ Step 2: Cast Encrypted Ballot</h3>
+                    </div>
+                    <p class="sub-text">Select your candidate for the <strong>National Presidential Election 2026</strong>:</p>
+
+                    <div id="candidate-list-grid" class="candidate-grid">
+                        <!-- Candidate cards injected dynamically -->
+                    </div>
+
+                    <div class="vote-action-bar">
+                        <button id="btn-submit-vote" class="btn btn-accent btn-full btn-lg" onclick="submitVote()" disabled>
+                            🔒 Sign & Submit Ballot to Blockchain
+                        </button>
+                    </div>
+
+                    <!-- Receipt Preview Box -->
+                    <div id="vote-receipt-box" class="receipt-box hidden">
+                        <h4>🎉 Vote Cast Successfully!</h4>
+                        <p>Your transaction has been broadcast to the P2P Mempool.</p>
+                        <div class="code-field">
+                            <span class="code-label">Cryptographic Receipt Hash:</span>
+                            <code id="receipt-hash-display" class="copyable">--</code>
+                        </div>
+                        <p class="receipt-tip">💡 Save this receipt hash to verify your vote inclusion in Phase 5 audit!</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- TAB 3: POS STAKING & BLOCK PROPOSING (PHASE 2) -->
+        <main id="tab-staking" class="tab-content">
+            <div class="grid-2col">
+                <!-- Left: Active Validators & Leader Probability -->
+                <div class="glass-card">
+                    <div class="card-header">
+                        <h3>⚖️ Active Proof-of-Stake (PoS) Validators</h3>
+                        <button class="btn btn-sm btn-secondary" onclick="loadValidators()">🔄 Refresh</button>
+                    </div>
+                    <p class="sub-text">Block proposers are selected via a stake-weighted random lottery algorithm (Higher Stake = Higher Proposer Probability).</p>
+
+                    <div id="validators-list" class="validators-list">
+                        <!-- Dynamic Validator Cards -->
+                    </div>
+                </div>
+
+                <!-- Right: Deposit Stake & Trigger Forging -->
+                <div class="glass-card">
+                    <div class="card-header">
+                        <h3>⚡ Block Forging & Slashing Portal</h3>
+                    </div>
+
+                    <!-- Forge Block Button -->
+                    <div class="forge-hero-box">
+                        <h4>Forge Next Blockchain Block</h4>
+                        <p>Pulls transactions from Mempool, computes Merkle Root, selects slot leader via PoS lottery, and appends signed block.</p>
+                        <button class="btn btn-accent btn-lg btn-full" onclick="triggerBlockForging()">
+                            ⚡ Execute PoS Slot Leader Selection & Forge Block
+                        </button>
+                    </div>
+
+                    <hr class="divider">
+
+                    <!-- Stake Tokens Form -->
+                    <h4>➕ Deposit Validator Stake</h4>
+                    <form id="staking-form">
+                        <div class="form-group">
+                            <label>Validator Node Name</label>
+                            <input type="text" id="stake-node-name" placeholder="e.g. Regional Election Node" required value="Regional Oversight Node">
+                        </div>
+                        <div class="form-group">
+                            <label>Wallet / Address Hash</label>
+                            <input type="text" id="stake-address" placeholder="val_node_04" required value="val_node_04_delta">
+                        </div>
+                        <div class="form-group">
+                            <label>Stake Amount (Minimum: 10 Tokens)</label>
+                            <input type="number" id="stake-amount" min="10" value="150" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-full">Deposit Stake & Become Proposer</button>
+                    </form>
+
+                    <hr class="divider">
+
+                    <!-- Slashing Demo -->
+                    <h4>⚠️ Security Slashing Protocol Demonstration</h4>
+                    <p class="sub-text">Demonstrates punishing a malicious validator node attempting double-signing or invalid block proposal.</p>
+                    <div class="inline-form">
+                        <select id="slash-validator-select">
+                            <!-- Populated dynamically -->
+                        </select>
+                        <button class="btn btn-danger" onclick="slashSelectedValidator()">Slash 50% Stake</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- TAB 4: BLOCKCHAIN EXPLORER (PHASE 2 & 5) -->
+        <main id="tab-explorer" class="tab-content">
+            <div class="glass-card">
+                <div class="card-header">
+                    <h3>🔗 Immutable Blockchain Ledger Explorer</h3>
+                    <div class="actions-inline">
+                        <span class="badge status-ok" id="explorer-chain-valid">Ledger 100% Cryptographically Valid</span>
+                        <button class="btn btn-sm btn-secondary" onclick="loadBlockchain()">🔄 Refresh Chain</button>
+                    </div>
+                </div>
+                
+                <div id="blocks-container" class="blocks-container">
+                    <!-- Blocks dynamically rendered as a visual chain -->
+                </div>
+            </div>
+        </main>
+
+        <!-- TAB 5: P2P NETWORK TOPOLOGY (PHASE 4) -->
+        <main id="tab-p2p" class="tab-content">
+            <div class="grid-2col">
+                <!-- Left: P2P Nodes Status -->
+                <div class="glass-card">
+                    <div class="card-header">
+                        <h3>🌐 Multi-Node Peer-to-Peer Network State</h3>
+                        <button class="btn btn-sm btn-secondary" onclick="loadP2PNodes()">🔄 Sync Nodes</button>
+                    </div>
+                    <p class="sub-text">Simulated distributed nodes holding identical synchronized copies of the ledger.</p>
+
+                    <div id="p2p-nodes-grid" class="nodes-grid">
+                        <!-- Dynamic P2P node cards -->
+                    </div>
+                </div>
+
+                <!-- Right: Mempool Live Monitor -->
+                <div class="glass-card">
+                    <div class="card-header">
+                        <h3>📥 Pending Mempool Transactions</h3>
+                    </div>
+                    <p class="sub-text">Unconfirmed vote transactions waiting for the next PoS block forging round.</p>
+
+                    <div id="mempool-list" class="mempool-list">
+                        <!-- Dynamic Mempool entries -->
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- TAB 6: RESULTS & RECEIPT VERIFIER (PHASE 5) -->
+        <main id="tab-tally" class="tab-content">
+            <div class="grid-2col">
+                <!-- Left: Live Tally & Chart -->
+                <div class="glass-card">
+                    <div class="card-header">
+                        <h3>📊 Real-Time Election Vote Tally</h3>
+                        <button class="btn btn-sm btn-secondary" onclick="loadTally()">🔄 Refresh Results</button>
+                    </div>
+                    <p class="sub-text">Tally computed strictly from verified blocks in the immutable blockchain ledger.</p>
+
+                    <!-- Chart Container -->
+                    <div class="chart-container">
+                        <canvas id="tally-chart"></canvas>
+                    </div>
+
+                    <!-- Tally Breakdown Table -->
+                    <div id="tally-table-container" class="table-responsive">
+                        <!-- Dynamic table -->
+                    </div>
+                </div>
+
+                <!-- Right: Voter Receipt Verifier -->
+                <div class="glass-card">
+                    <div class="card-header">
+                        <h3>🔍 Cryptographic Receipt Verifier</h3>
+                    </div>
+                    <p class="sub-text">Voters can independently verify their ballot was recorded in a block without revealing candidate choice.</p>
+
+                    <div class="form-group">
+                        <label>Voter Receipt Hash</label>
+                        <input type="text" id="verify-receipt-input" placeholder="Paste receipt hash e.g. a3f8b1..." value="">
+                    </div>
+                    <button class="btn btn-primary btn-full" onclick="verifyReceipt()">Verify Inclusion on Blockchain</button>
+
+                    <!-- Verification Result Box -->
+                    <div id="verify-result-box" class="verify-box hidden">
+                        <!-- Dynamic verification report -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Application Script -->
+    <script src="app.js"></script>
+</body>
+</html>
